@@ -1,4 +1,4 @@
-﻿using Nume_Pren_Lab2.Models;
+﻿using Lates_Malina_Lab2.Models;
 
 public class Publisher
 {

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Lates_Malina_Lab2.Data;
 using Lates_Malina_Lab2.Models;
 
-namespace Lates_Malina_Lab2.Pages.Books
+namespace Lates_Malina_Lab2.Pages.Authors
 {
     public class DeleteModel : PageModel
     {
@@ -20,7 +20,7 @@ namespace Lates_Malina_Lab2.Pages.Books
         }
 
         [BindProperty]
-        public Book Book { get; set; } = default!;
+        public Author Author { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -29,15 +29,15 @@ namespace Lates_Malina_Lab2.Pages.Books
                 return NotFound();
             }
 
-            var book = await _context.Book.FirstOrDefaultAsync(m => m.ID == id);
+            var author = await _context.Authors.FirstOrDefaultAsync(m => m.ID == id);
 
-            if (book == null)
+            if (author == null)
             {
                 return NotFound();
             }
             else
             {
-                Book = book;
+                Author = author;
             }
             return Page();
         }
@@ -49,11 +49,11 @@ namespace Lates_Malina_Lab2.Pages.Books
                 return NotFound();
             }
 
-            var book = await _context.Book.FindAsync(id);
-            if (book != null)
+            var author = await _context.Authors.FindAsync(id);
+            if (author != null)
             {
-                Book = book;
-                _context.Book.Remove(Book);
+                Author = author;
+                _context.Authors.Remove(Author);
                 await _context.SaveChangesAsync();
             }
 

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Lates_Malina_Lab2.Data;
 using Lates_Malina_Lab2.Models;
 
-namespace Lates_Malina_Lab2.Pages.Books
+namespace Lates_Malina_Lab2.Pages.Authors
 {
     public class DetailsModel : PageModel
     {
@@ -19,7 +19,7 @@ namespace Lates_Malina_Lab2.Pages.Books
             _context = context;
         }
 
-        public Models.Book Book { get; set; } = default!;
+        public Author Author { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -28,23 +28,16 @@ namespace Lates_Malina_Lab2.Pages.Books
                 return NotFound();
             }
 
-            // Include Publisher, Author și categoriile asociate
-            Book = await _context.Book
-     .Include(b => b.Author)
-     .Include(b => b.Publisher)
-     .Include(b => b.BookCategories)
-         .ThenInclude(bc => bc.Category)
-     .FirstOrDefaultAsync(m => m.ID == id);
-
-
-            if (Book == null)
-            
+            var author = await _context.Authors.FirstOrDefaultAsync(m => m.ID == id);
+            if (author == null)
+            {
                 return NotFound();
-               
-            
-
+            }
+            else
+            {
+                Author = author;
+            }
             return Page();
         }
-
     }
 }

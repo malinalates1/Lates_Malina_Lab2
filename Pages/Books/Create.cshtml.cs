@@ -6,11 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Lates_Malina_Lab2.Data;
-using Nume_Pren_Lab2.Models;
+using Lates_Malina_Lab2.Models;
 
 namespace Lates_Malina_Lab2.Pages.Books
 {
-    public class CreateModel : PageModel
+    public class CreateModel : BookCategoriesPageModel
     {
         private readonly Lates_Malina_Lab2.Data.Lates_Malina_Lab2Context _context;
 
@@ -31,6 +31,9 @@ namespace Lates_Malina_Lab2.Pages.Books
                 "FullName"
             );
 
+            var book = new Book();
+            book.BookCategories = new List<BookCategory>();
+            PopulateAssignedCategoryData(_context, book);
             return Page();
         }
 
@@ -38,16 +41,24 @@ namespace Lates_Malina_Lab2.Pages.Books
         public Book Book { get; set; } = default!;
 
         // Post pentru salvare
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(string[] selectedCategories)
         {
-            if (!ModelState.IsValid)
+            var newBook = new Book();
+            if (selectedCategories != null)
             {
-                return Page();
+                newBook.BookCategories = new List<BookCategory>();
+                foreach (var cat in selectedCategories)
+                {
+                    var catToAdd = new BookCategory
+                    {
+                        CategoryID = int.Parse(cat)
+                    };
+                    newBook.BookCategories.Add(catToAdd);
+                }
             }
-
+            Book.BookCategories = newBook.BookCategories;
             _context.Book.Add(Book);
             await _context.SaveChangesAsync();
-
             return RedirectToPage("./Index");
         }
     }

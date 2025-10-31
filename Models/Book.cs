@@ -1,15 +1,17 @@
-﻿using System;
+﻿using Lates_Malina_Lab2.Models;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Nume_Pren_Lab2.Models
+namespace Lates_Malina_Lab2.Models
 {
     public class Book
     {
         public int ID { get; set; }
 
         [Display(Name = "Book Title")]
-        public string Title { get; set; }
+        public string Title { get; set; } = string.Empty;
 
         // Foreign Key pentru Author
         public int? AuthorID { get; set; }
@@ -26,5 +28,7 @@ namespace Nume_Pren_Lab2.Models
         // Publisher
         public int? PublisherID { get; set; }
         public Publisher? Publisher { get; set; }
+
+        public ICollection<BookCategory>? BookCategories { get; set; }
     }
 }

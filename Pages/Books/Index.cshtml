@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "/"
 @model Lates_Malina_Lab2.Pages.Books.IndexModel
 
 @{
@@ -19,18 +19,36 @@
             <th>@Html.DisplayNameFor(model => model.Book[0].Price)</th>
             <th>@Html.DisplayNameFor(model => model.Book[0].PublishingDate)</th>
             <th>@Html.DisplayNameFor(model => model.Book[0].Publisher.PublisherName)</th>
+            <th>@Html.DisplayNameFor(model => model.Book[0].BookCategories)</th>
             <th></th>
         </tr>
     </thead>
+
     <tbody>
-        @foreach (var item in Model.Book)
+        @foreach (var item in Model.BookD.Books)
         {
-            <tr>
+            string selectedRow = "";
+            if (item.ID == Model.BookID)
+            {
+                selectedRow = "table-success";
+            }
+            <tr class="@selectedRow">
                 <td>@Html.DisplayFor(modelItem => item.Title)</td>
                 <td>@(item.Author != null ? item.Author.FirstName + " " + item.Author.LastName : "")</td>
                 <td>@Html.DisplayFor(modelItem => item.Price)</td>
                 <td>@Html.DisplayFor(modelItem => item.PublishingDate)</td>
                 <td>@(item.Publisher != null ? item.Publisher.PublisherName : "")</td>
+                <td>
+                    @if (item.BookCategories != null && item.BookCategories.Any())
+                    {
+                        @string.Join(", ", item.BookCategories.Select(bc => bc.Category?.CategoryName ?? ""))
+                    }
+                    else
+                    {
+                        <span>No categories assigned</span>
+                    }
+
+                </td>
                 <td>
                     <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
                     <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |

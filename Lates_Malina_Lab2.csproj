@@ -7,6 +7,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Pages\NewFolder2\**" />
+    <Content Remove="Pages\NewFolder2\**" />
+    <EmbeddedResource Remove="Pages\NewFolder2\**" />
+    <None Remove="Pages\NewFolder2\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Pages\Index.cshtml.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Pages\Index.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="8.0.11" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.11">
       <PrivateAssets>all</PrivateAssets>
