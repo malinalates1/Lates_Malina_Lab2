@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Lates_Malina_Lab2.Data;
-using Nume_Pren_Lab2.Models;
+using Lates_Malina_Lab2.Models;
 
 namespace Lates_Malina_Lab2.Pages.Authors
 {
