@@ -1,12 +1,28 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Lates_Malina_Lab2.Data;
+using Microsoft.AspNetCore.Identity;
+using Lates_Malina_Lab2.Areas.Identity.Data; // pentru LibraryIdentityContext
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+// Contextul principal (pentru Books, Authors, etc.)
 builder.Services.AddDbContext<Lates_Malina_Lab2Context>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Lates_Malina_Lab2Context") ?? throw new InvalidOperationException("Connection string 'Lates_Malina_Lab2Context' not found.")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Lates_Malina_Lab2Context") ??
+        throw new InvalidOperationException("Connection string 'Lates_Malina_Lab2Context' not found.")));
+
+// Contextul pentru autentificare (Identity)
+builder.Services.AddDbContext<LibraryIdentityContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Lates_Malina_Lab2Context") ??
+        throw new InvalidOperationException("Connection string 'Lates_Malina_Lab2Context' not found.")));
+
+// Adaugă serviciile de autentificare (Identity)
+builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+        options.SignIn.RequireConfirmedAccount = false)  // pentru test
+    .AddEntityFrameworkStores<LibraryIdentityContext>();
 
 var app = builder.Build();
 
@@ -14,7 +30,6 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -23,6 +38,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();   // <--- adăugată
 app.UseAuthorization();
 
 app.MapRazorPages();
