@@ -27,6 +27,25 @@
                 <label asp-for="Input.ConfirmPassword">Confirm Password</label>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Member.FirstName" class="form-control" placeholder="First Name" />
+                <label asp-for="Member.FirstName"></label>
+                <span asp-validation-for="Member.FirstName" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Member.LastName" class="form-control" placeholder="Last Name" />
+                <label asp-for="Member.LastName"></label>
+                <span asp-validation-for="Member.LastName" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Member.Phone" class="form-control" placeholder="Phone (0722-123-123)" />
+                <label asp-for="Member.Phone"></label>
+                <span asp-validation-for="Member.Phone" class="text-danger"></span>
+            </div>
+
             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </form>
     </div>

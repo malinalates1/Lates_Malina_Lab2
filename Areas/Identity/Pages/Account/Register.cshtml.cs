@@ -51,10 +51,10 @@ namespace Lates_Malina_Lab2.Areas.Identity.Pages.Account
         }
 
         [BindProperty]
-        public InputModel Input { get; set; }
+        public Member Member { get; set; }
 
         [BindProperty]
-        public Member Member { get; set; }
+        public InputModel Input { get; set; }
 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
         public string ReturnUrl { get; set; }
@@ -81,6 +81,10 @@ namespace Lates_Malina_Lab2.Areas.Identity.Pages.Account
         public async Task OnGetAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
+
+            // 🔥 IMPORTANT: Inițializăm Member ca să nu fie NULL
+            Member = new Member();
+
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             ReturnUrl = returnUrl;
         }
@@ -88,6 +92,11 @@ namespace Lates_Malina_Lab2.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
+
+            // 🔥 asigurăm că Member nu este NULL
+            if (Member == null)
+                Member = new Member();
+
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
             if (ModelState.IsValid)
@@ -102,10 +111,13 @@ namespace Lates_Malina_Lab2.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    // ✅ Salvăm automat emailul și în tabela Member
+                    // 🔥 Salvăm automat emailul și în Member
                     Member.Email = Input.Email;
                     _context.Member.Add(Member);
                     await _context.SaveChangesAsync();
+
+                    // 🔥 Adăugăm rolul User
+                    await _userManager.AddToRoleAsync(user, "User");
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -138,7 +150,7 @@ namespace Lates_Malina_Lab2.Areas.Identity.Pages.Account
                 }
             }
 
-            // Dacă apare o eroare, reafișăm pagina
+            // Reafișăm pagina dacă este eroare
             return Page();
         }
 
@@ -150,9 +162,7 @@ namespace Lates_Malina_Lab2.Areas.Identity.Pages.Account
             }
             catch
             {
-                throw new InvalidOperationException($"Can't create an instance of '{nameof(IdentityUser)}'. " +
-                    $"Ensure that '{nameof(IdentityUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
-                    $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
+                throw new InvalidOperationException($"Can't create an instance of '{nameof(IdentityUser)}'.");
             }
         }
 
