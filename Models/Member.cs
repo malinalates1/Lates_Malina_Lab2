@@ -6,6 +6,8 @@ namespace Lates_Malina_Lab2.Models
     {
         public int ID { get; set; }
 
+
+
         [RegularExpression(@"^[A-Z]+[a-zA-Z\s-]*$",
             ErrorMessage = "Prenumele trebuie sa inceapa cu majuscula (ex. Ana sau Ana Maria sau Ana-Maria)")]
         [StringLength(30, MinimumLength = 3)]
